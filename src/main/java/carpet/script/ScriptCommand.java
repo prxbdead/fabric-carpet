@@ -675,7 +675,10 @@ public class ScriptCommand
                         if (replacement == null || replacement.test(
                                 new BlockInWorld(world, mbpos, true)))
                         {
-                            if (block.place(world, mbpos, 2 & Block.UPDATE_SKIP_BLOCK_ENTITY_SIDEEFFECTS))
+                            BlockEntity tileentity = world.getBlockEntity(mbpos);
+                            Clearable.tryClear(tileentity);
+
+                            if (block.place(world, mbpos, 2))
                             {
                                 ++affected;
                             }
@@ -698,7 +701,7 @@ public class ScriptCommand
                         {
                             mbpos.set(x + area.minX(), y + area.minY(), z + area.minZ());
                             Block blokc = world.getBlockState(mbpos).getBlock();
-                            world.updateNeighborsAt(mbpos, blokc);
+                            world.blockUpdated(mbpos, blokc);
                         }
                     }
                 }
