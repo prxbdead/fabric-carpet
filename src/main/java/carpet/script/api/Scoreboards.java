@@ -26,7 +26,6 @@ import net.minecraft.server.ServerScoreboard;
 import net.minecraft.server.bossevents.CustomBossEvent;
 import net.minecraft.server.bossevents.CustomBossEvents;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.scores.DisplaySlot;
 import net.minecraft.world.scores.Objective;
@@ -580,12 +579,12 @@ public class Scoreboards
                         BossEvent.BossBarColor color = (bossBar).getColor();
                         return color == null ? Value.NULL : StringValue.of(color.getName());
                     }
-                    BossEvent.BossBarColor color = ((StringRepresentable.EnumCodec<BossEvent.BossBarColor>)BossEvent.BossBarColor.CODEC).byName(propertyValue.getString());
+                    BossEvent.BossBarColor color = BossEvent.BossBarColor.byName(propertyValue.getString());
                     if (color == null)
                     {
                         return Value.NULL;
                     }
-                    bossBar.setColor(color);
+                    bossBar.setColor(BossEvent.BossBarColor.byName(propertyValue.getString()));
                     return Value.TRUE;
                 }
                 case "max" -> {
@@ -663,7 +662,7 @@ public class Scoreboards
                     {
                         return StringValue.of(bossBar.getOverlay().getName());
                     }
-                    BossEvent.BossBarOverlay style = ((StringRepresentable.EnumCodec<BossEvent.BossBarOverlay>)BossEvent.BossBarOverlay.CODEC).byName(propertyValue.getString());
+                    BossEvent.BossBarOverlay style = BossEvent.BossBarOverlay.byName(propertyValue.getString());
                     if (style == null)
                     {
                         throw new InternalExpressionException("'" + propertyValue.getString() + "' is not a valid value for property " + property);

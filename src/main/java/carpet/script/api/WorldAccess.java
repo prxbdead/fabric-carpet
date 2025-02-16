@@ -43,7 +43,6 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.DistanceManager;
 import net.minecraft.server.level.ServerLevel;
@@ -888,7 +887,7 @@ public class WorldAccess
             ItemStack tool;
             if (tag != null)
             {
-                tool = ItemStack.CODEC.parse(regs.createSerializationContext(NbtOps.INSTANCE), tag).result().orElse(null);
+                tool = ItemStack.parseOptional(regs, tag);
             }
             else
             {
@@ -956,7 +955,7 @@ public class WorldAccess
             {
                 return Value.NULL;
             }
-            return new NBTSerializableValue(() -> ItemStack.CODEC.encodeStart(regs.createSerializationContext(NbtOps.INSTANCE), tool).getOrThrow());
+            return new NBTSerializableValue(() -> tool.saveOptional(regs));
 
         });
 

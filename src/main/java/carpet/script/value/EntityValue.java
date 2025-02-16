@@ -530,16 +530,15 @@ public class EntityValue extends Value
         put("spawn_point", (e, a) -> {
             if (e instanceof ServerPlayer spe)
             {
-                if (spe.getRespawnConfig() == null)
+                if (spe.getRespawnPosition() == null)
                 {
                     return Value.FALSE;
                 }
-                ServerPlayer.RespawnConfig spec = spe.getRespawnConfig();
                 return ListValue.of(
-                        ValueConversions.of(spec.pos()),
-                        ValueConversions.of(spec.dimension()),
-                        new NumericValue(spec.angle()),
-                        BooleanValue.of(spec.forced())
+                        ValueConversions.of(spe.getRespawnPosition()),
+                        ValueConversions.of(spe.getRespawnDimension()),
+                        new NumericValue(spe.getRespawnAngle()),
+                        BooleanValue.of(spe.isRespawnForced())
                 );
             }
             return Value.NULL;
@@ -1367,7 +1366,7 @@ public class EntityValue extends Value
             }
             if (a == null)
             {
-                spe.setRespawnPosition(null, false);
+                spe.setRespawnPosition(null, null, 0, false, false);
             }
             else if (a instanceof ListValue lv)
             {
@@ -1390,7 +1389,7 @@ public class EntityValue extends Value
                         }
                     }
                 }
-                spe.setRespawnPosition(new ServerPlayer.RespawnConfig(world, pos, angle, forced), false);
+                spe.setRespawnPosition(world, pos, angle, forced, false);
             }
             else if (a instanceof BlockValue bv)
             {
@@ -1398,11 +1397,11 @@ public class EntityValue extends Value
                 {
                     throw new InternalExpressionException("block for spawn modification should be localised in the world");
                 }
-                spe.setRespawnPosition(new ServerPlayer.RespawnConfig(bv.getWorld().dimension(), bv.getPos(), e.getYRot(), true), false); // yaw
+                spe.setRespawnPosition(bv.getWorld().dimension(), bv.getPos(), e.getYRot(), true, false); // yaw
             }
             else if (a.isNull())
             {
-                spe.setRespawnPosition(null, false);
+                spe.setRespawnPosition(null, null, 0, false, false);
             }
             else
             {
