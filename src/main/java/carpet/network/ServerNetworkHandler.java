@@ -83,7 +83,6 @@ public class ServerNetworkHandler
         String id = commandData.getString("id");
         List<Component> output = new ArrayList<>();
         Component[] error = {null};
-        int[] returnValue = {0};
         if (player.getServer() == null)
         {
             error[0] = Component.literal("No Server");
@@ -91,7 +90,7 @@ public class ServerNetworkHandler
         else
         {
             player.getServer().getCommands().performPrefixedCommand(
-                    new SnoopyCommandSource(player, error, output, returnValue), command
+                    new SnoopyCommandSource(player, error, output), command
             );
         }
         CompoundTag result = new CompoundTag();
@@ -100,7 +99,6 @@ public class ServerNetworkHandler
         {
             result.putString("error", error[0].getContents().toString());
         }
-        result.putInt("return", returnValue[0]);
         ListTag outputResult = new ListTag();
         for (Component line : output)
         {

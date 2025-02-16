@@ -97,7 +97,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.OptionalLong;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
@@ -685,17 +684,12 @@ public class Auxiliary
             try
             {
                 Component[] error = {null};
-                OptionalLong[] returnValue = {OptionalLong.empty()};
                 List<Component> output = new ArrayList<>();
                 s.getServer().getCommands().performPrefixedCommand(
-                        new SnoopyCommandSource(s, error, output, returnValue),
+                        new SnoopyCommandSource(s, error, output),
                         lv.get(0).getString());
-                if (returnValue[0].isEmpty())
-                {
-                    return Value.NULL;
-                }
                 return ListValue.of(
-                        NumericValue.of(returnValue[0].getAsLong()),
+                        NumericValue.ZERO,
                         ListValue.wrap(output.stream().map(FormattedTextValue::new)),
                         FormattedTextValue.of(error[0])
                 );
